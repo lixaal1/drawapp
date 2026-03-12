@@ -5,8 +5,10 @@ const brushSizeInput = document.getElementById("brushSize");
 const brushSizeValue = document.getElementById("brushSizeValue");
 const clearCanvasBtn = document.getElementById("clearCanvasBtn");
 const saveDrawingBtn = document.getElementById("saveDrawingBtn");
+const clearGalleryBtn = document.getElementById("clearGalleryBtn");
 const statusText = document.getElementById("statusText");
 const gallery = document.getElementById("gallery");
+const galleryItemTemplate = document.getElementById("galleryItemTemplate");
 
 const storageKey = "drawapp-gallery";
 let drawing = false;
@@ -36,6 +38,18 @@ saveDrawingBtn.addEventListener("click", () => {
   persistGallery();
   renderGallery();
   setStatus("Joonistus salvestatud galeriisse.");
+});
+
+clearGalleryBtn.addEventListener("click", () => {
+  if (galleryImages.length === 0) {
+    setStatus("Galerii on juba tuhi.");
+    return;
+  }
+
+  galleryImages = [];
+  persistGallery();
+  renderGallery();
+  setStatus("Galerii tuhjendatud.");
 });
 
 
@@ -99,16 +113,20 @@ function renderGallery() {
     return;
   }
 
-  galleryImages.forEach((imageData) => {
-    const card = document.createElement("article");
-    const img = document.createElement("img");
+  galleryImages.forEach((imageData, index) => {
+    const fragment = galleryItemTemplate.content.cloneNode(true);
+    const img = fragment.querySelector("img");
+    const deleteBtn = fragment.querySelector("button");
 
-    card.className = "gallery-item";
     img.src = imageData;
-    img.alt = "Kasutaja joonistus";
+    deleteBtn.addEventListener("click", () => {
+      galleryImages.splice(index, 1);
+      persistGallery();
+      renderGallery();
+      setStatus("Joonistus kustutatud.");
+    });
 
-    card.appendChild(img);
-    gallery.appendChild(card);
+    gallery.appendChild(fragment);
   });
 }
 

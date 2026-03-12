@@ -44,11 +44,19 @@
     <section class="panel gallery-panel" aria-label="Salvestatud joonistuste galerii">
       <div class="gallery-header">
         <h2>Galerii</h2>
+        <button id="clearGalleryBtn" type="button" class="danger">Tuhjenda galerii</button>
       </div>
       <div id="gallery" class="gallery-grid"></div>
     </section>
 
   </main>
+
+  <template id="galleryItemTemplate">
+    <article class="gallery-item">
+      <img alt="Kasutaja joonistus" />
+      <button type="button" class="danger small">Kustuta</button>
+    </article>
+  </template>
 
   <script src="script.js"></script>
 </body>
