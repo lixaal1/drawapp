@@ -132,6 +132,12 @@ output {
   flex-wrap: wrap;
 }
 
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
 button {
   border: 1px solid var(--line);
   background: #ffffff;
@@ -166,6 +172,19 @@ button.small {
   font-size: 0.9rem;
 }
 
+button.is-active {
+  background: var(--accent-2);
+  border-color: transparent;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .canvas-panel {
   padding: 14px;
 }
@@ -174,6 +193,7 @@ canvas {
   width: 100%;
   max-width: 100%;
   height: auto;
+  touch-action: none;
   background: #fff;
   border-radius: 14px;
   border: 1px solid var(--line);
