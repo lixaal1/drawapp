@@ -32,12 +32,20 @@
       </div>
       <div class="button-row">
         <button id="clearCanvasBtn" type="button">Puhasta louend</button>
+        <button id="saveDrawingBtn" type="button" class="accent">Salvesta galeriisse</button>
       </div>
     </section>
 
     <section class="panel canvas-panel" aria-label="Joonistusala">
       <canvas id="drawingCanvas" width="900" height="500"></canvas>
       <p id="statusText" class="status-text" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="panel gallery-panel" aria-label="Salvestatud joonistuste galerii">
+      <div class="gallery-header">
+        <h2>Galerii</h2>
+      </div>
+      <div id="gallery" class="gallery-grid"></div>
     </section>
 
   </main>

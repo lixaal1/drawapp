@@ -4,12 +4,17 @@ const colorPicker = document.getElementById("colorPicker");
 const brushSizeInput = document.getElementById("brushSize");
 const brushSizeValue = document.getElementById("brushSizeValue");
 const clearCanvasBtn = document.getElementById("clearCanvasBtn");
+const saveDrawingBtn = document.getElementById("saveDrawingBtn");
 const statusText = document.getElementById("statusText");
+const gallery = document.getElementById("gallery");
 
+const storageKey = "drawapp-gallery";
 let drawing = false;
 let lastPoint = { x: 0, y: 0 };
+let galleryImages = loadGallery();
 
 initializeCanvas();
+renderGallery();
 
 canvas.addEventListener("pointerdown", startDrawing);
 canvas.addEventListener("pointermove", draw);
@@ -23,6 +28,14 @@ brushSizeInput.addEventListener("input", () => {
 clearCanvasBtn.addEventListener("click", () => {
   clearCanvas();
   setStatus("Louend puhastatud.");
+});
+
+saveDrawingBtn.addEventListener("click", () => {
+  const dataUrl = canvas.toDataURL("image/png");
+  galleryImages.unshift(dataUrl);
+  persistGallery();
+  renderGallery();
+  setStatus("Joonistus salvestatud galeriisse.");
 });
 
 
@@ -73,6 +86,50 @@ function getCanvasPoint(event) {
     x: (event.clientX - rect.left) * scaleX,
     y: (event.clientY - rect.top) * scaleY,
   };
+}
+
+function renderGallery() {
+  gallery.innerHTML = "";
+
+  if (galleryImages.length === 0) {
+    const emptyText = document.createElement("p");
+    emptyText.textContent = "Galerii on tuhi. Salvesta esimene joonistus!";
+    emptyText.className = "status-text";
+    gallery.appendChild(emptyText);
+    return;
+  }
+
+  galleryImages.forEach((imageData) => {
+    const card = document.createElement("article");
+    const img = document.createElement("img");
+
+    card.className = "gallery-item";
+    img.src = imageData;
+    img.alt = "Kasutaja joonistus";
+
+    card.appendChild(img);
+    gallery.appendChild(card);
+  });
+}
+
+function loadGallery() {
+  const raw = localStorage.getItem(storageKey);
+
+  if (!raw) {
+    return [];
+  }
+
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Galerii laadimine ebaonnestus:", error);
+    return [];
+  }
+}
+
+function persistGallery() {
+  localStorage.setItem(storageKey, JSON.stringify(galleryImages));
 }
 
 function setStatus(message) {
