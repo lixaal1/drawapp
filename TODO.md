@@ -6,5 +6,5 @@
 - [x] Lisa uksiku pildi kustutamine galeriist
 - [x] Lisa kogu galerii tuhjendamise nupp
 - [ ] Kontrolli tootamist brauseris
-- [ ] Tee commitid etappide kaupa
+- [x] Tee commitid etappide kaupa
 - [ ] Avalda GitHubis
